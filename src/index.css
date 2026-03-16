@@ -1,0 +1,56 @@
+@import "tailwindcss";
+@import "flowbite";
+
+@layer {
+  .container {
+    @apply max-w-[1240px] w-full px-[20px] mx-auto;
+  }
+  .flex-center {
+    @apply flex items-center;
+  }
+
+  .header-link {
+    @apply text-[#3D3D3D] font-normal text-[16px] leading-[100%] transform transition-all duration-10 ease-in border-b-[3px] border-b-transparent hover:duration-10 hover:ease-out hover:font-bold hover:border-b-[#46A358] hover:text-[#2c6f42];
+  }
+  .header-right {
+    @apply rounded-[6px] py-[7px] px-[17px] bg-[#46A358] text-[#ffffff] font-normal text-[16px] leading-[100%] hover:opacity-90;
+  }
+
+  /* Custom range slider styling */
+  input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: transparent;
+  }
+
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 9999px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    background: #16a34a;
+    border: 2px solid white;
+    margin-top: -4px;
+  }
+
+  input[type="range"]::-moz-range-track {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 9999px;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    background: #16a34a;
+    border: 2px solid white;
+  }
+}
