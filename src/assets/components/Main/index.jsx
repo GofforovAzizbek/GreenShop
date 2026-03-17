@@ -47,8 +47,7 @@ function Main({ showHero = true }) {
     setIsFiltersOpen(false);
   };
 
-  const handleMaxPriceChange = (max) => {
-    const range = [0, max];
+  const handleMaxPriceChange = (range) => {
     setPriceRange(range);
     setAppliedPriceRange(range);
     setPage(1);
@@ -184,7 +183,7 @@ function Main({ showHero = true }) {
 
           <div className="flex-1">
             <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div className="flex flex-wrap items-center gap-[35px] text-sm text-gray-600">
+              <div className="flex flex-wrap items-center gap-8.75 text-sm text-gray-600">
                 {[
                   { key: "all", label: "All Plants" },
                   { key: "new", label: "New Arrivals" },
@@ -199,7 +198,7 @@ function Main({ showHero = true }) {
                     }}
                     className={`transition ${
                       activeTab === tab.key
-                        ? "text-green-600 border-b-[2px] pb-[5px]"
+                        ? "text-green-600 border-b-2 pb-1.25"
                         : "bg-white text-gray-600 hover:bg-gray-100"
                     }`}
                   >

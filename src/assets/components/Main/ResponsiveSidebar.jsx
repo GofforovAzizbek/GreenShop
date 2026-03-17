@@ -69,7 +69,7 @@ export default function ResponsiveSidebar({
       <button
         type="button"
         onClick={onOpen}
-        className="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 rounded-full bg-green-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-black/10 transition hover:bg-green-700 lg:hidden"
+        className="fixed bottom-6 left-1/2 z-40 -translate-x-1/2 rounded-full bg-green-600 px-6 py-3 text-sm font-medium text-white shadow-lg shadow-black/10 transition hover:bg-green-700 hidden"
       >
         Filters
       </button>

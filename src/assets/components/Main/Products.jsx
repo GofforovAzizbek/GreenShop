@@ -3,7 +3,6 @@ import { useNavigationLoading } from "../../../contexts/NavigationContext";
 
 function ProductCard({ product }) {
   const { startLoading } = useNavigationLoading();
-
   const discountedPrice = product.discount
     ? Math.round(product.price * (1 - product.discount / 100))
     : null;
@@ -20,32 +19,19 @@ function ProductCard({ product }) {
         }`
       }
     >
-      <div className="relative overflow-hidden rounded-t-2xl bg-gray-50">
-        <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/0 opacity-0 transition duration-200 group-hover:bg-black/30 group-hover:opacity-100">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-green-600 shadow">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+      <div className="relative overflow-hidden rounded-t-2xl bg-white flex flex-col items-center justify-center min-h-[300px]">
+        <img
+          src={product.pictures?.[0]}
+          alt={product.name}
+          className="h-48 w-full object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+        />
+        {/* Hover icons: only visible on hover */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <span className="flex h-10 w-10 items-center justify-center rounded bg-white text-green-600 shadow border border-gray-200 cursor-pointer">
+            {/* Cart icon */}
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
               <path
-                d="M7 18C7.55228 18 8 18.4477 8 19C8 19.5523 7.55228 20 7 20C6.44772 20 6 19.5523 6 19C6 18.4477 6.44772 18 7 18Z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M17 18C17.5523 18 18 18.4477 18 19C18 19.5523 17.5523 20 17 20C16.4477 20 16 19.5523 16 19C16 18.4477 16.4477 18 17 18Z"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M5 6H6.5L7.68 12.39C7.7596 12.7911 8.01279 13.1302 8.37016 13.3487C8.72753 13.5672 9.16477 13.6477 9.586 13.576L18.24 12.16C18.5434 12.1083 18.8203 11.9483 19.0135 11.7093C19.2067 11.4703 19.3036 11.1661 19.28 10.86L18.8 7.48C18.7144 6.88866 18.2106 6.41672 17.615 6.35L6.78 4.5C6.52478 4.45946 6.26404 4.50091 6.03509 4.61939C5.80615 4.73787 5.62576 4.92839 5.521 5.16L5 6Z"
+                d="M7 18C7.552 18 8 18.448 8 19C8 19.552 7.552 20 7 20C6.448 20 6 19.552 6 19C6 18.448 6.448 18 7 18ZM17 18C17.552 18 18 18.448 18 19C18 19.552 17.552 20 17 20C16.448 20 16 19.552 16 19C16 18.448 16.448 18 17 18ZM5 6H6.5L7.68 12.39C7.76 12.791 8.013 13.13 8.37 13.349C8.728 13.567 9.165 13.648 9.586 13.576L18.24 12.16C18.543 12.108 18.82 11.948 19.014 11.709C19.207 11.47 19.304 11.166 19.28 10.86L18.8 7.48C18.714 6.889 18.211 6.417 17.615 6.35L6.78 4.5C6.525 4.459 6.264 4.501 6.035 4.619C5.806 4.738 5.626 4.928 5.521 5.16L5 6Z"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
@@ -53,16 +39,11 @@ function ProductCard({ product }) {
               />
             </svg>
           </span>
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-green-600 shadow">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+          <span className="flex h-10 w-10 items-center justify-center rounded bg-white text-green-600 shadow border border-gray-200 cursor-pointer">
+            {/* Heart icon */}
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
               <path
-                d="M20.84 4.61C20.3292 4.1092 19.7228 3.69335 19.0545 3.38448C18.3862 3.0756 17.6683 2.87859 16.94 2.8C15.713 2.6473 14.4469 3.05409 13.58 3.92L12 5.5L10.42 3.92C9.55315 3.05409 8.28704 2.6473 7.06 2.8C6.33171 2.87859 5.61386 3.0756 4.94552 3.38448C4.27719 3.69335 3.67081 4.1092 3.16 4.61C1.87 5.9 1.87 8.03 3.16 9.32L12 18.16L20.84 9.32C22.13 8.03 22.13 5.9 20.84 4.61Z"
+                d="M20.84 4.61C20.329 4.109 19.723 3.693 19.055 3.384C18.386 3.076 17.668 2.879 16.94 2.8C15.713 2.647 14.447 3.054 13.58 3.92L12 5.5L10.42 3.92C9.553 3.054 8.287 2.647 7.06 2.8C6.332 2.879 5.614 3.076 4.946 3.384C4.277 3.693 3.671 4.109 3.16 4.61C1.87 5.9 1.87 8.03 3.16 9.32L12 18.16L20.84 9.32C22.13 8.03 22.13 5.9 20.84 4.61Z"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
@@ -70,14 +51,9 @@ function ProductCard({ product }) {
               />
             </svg>
           </span>
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-green-600 shadow">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+          <span className="flex h-10 w-10 items-center justify-center rounded bg-white text-green-600 shadow border border-gray-200 cursor-pointer">
+            {/* Search icon */}
+            <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
               <path
                 d="M21 21L15 15"
                 stroke="currentColor"
@@ -86,7 +62,7 @@ function ProductCard({ product }) {
                 strokeLinejoin="round"
               />
               <path
-                d="M10 18C13.3137 18 16 15.3137 16 12C16 8.68629 13.3137 6 10 6C6.68629 6 4 8.68629 4 12C4 15.3137 6.68629 18 10 18Z"
+                d="M10 18C13.314 18 16 15.314 16 12C16 8.686 13.314 6 10 6C6.686 6 4 8.686 4 12C4 15.314 6.686 18 10 18Z"
                 stroke="currentColor"
                 strokeWidth="2"
                 strokeLinecap="round"
@@ -95,26 +71,14 @@ function ProductCard({ product }) {
             </svg>
           </span>
         </div>
-
-        <img
-          src={product.pictures?.[0]}
-          alt={product.name}
-          className="h-48 w-full object-contain p-4 transition-transform duration-300 group-hover:scale-105"
-        />
       </div>
-      <div className="p-4">
-        <h3 className="text-sm font-semibold text-gray-900 line-clamp-2">
+      <div className="p-4 flex flex-col items-start">
+        <h3 className="text-base font-normal text-gray-900 mb-2">
           {product.name}
         </h3>
-        <p className="mt-1 text-xs text-gray-500">{product.category}</p>
-        <div className="mt-3 flex items-end justify-between">
-          <div>
-            <span className="text-lg font-semibold text-gray-900">
-              ${discountedPrice ?? product.price}
-            </span>
-          </div>
-          <span className="text-xs text-gray-500">Size: {product.size}</span>
-        </div>
+        <span className="text-lg font-bold text-green-600">
+          ${discountedPrice ?? product.price}.00
+        </span>
       </div>
     </NavLink>
   );
