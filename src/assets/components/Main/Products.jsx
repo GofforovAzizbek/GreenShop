@@ -19,7 +19,7 @@ function ProductCard({ product }) {
         }`
       }
     >
-      <div className="relative overflow-hidden rounded-t-2xl bg-white flex flex-col items-center justify-center min-h-[300px]">
+      <div className="relative overflow-hidden rounded-t-2xl bg-white flex flex-col items-center justify-center min-h-[294.5px]">
         <img
           src={product.pictures?.[0]}
           alt={product.name}

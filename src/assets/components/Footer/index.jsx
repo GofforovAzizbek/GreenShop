@@ -80,7 +80,7 @@ const DesktopFooter = () => {
           <div className="grid grid-cols-4 gap-10">
             {/* Categories */}
             {categories.map((cat, i) => (
-              <div key={i} className="flex items-start gap-4">
+              <div key={i} className="flex flex-col items-start gap-4">
                 <div className="w-14 h-14 shrink-0 flex items-center justify-center">
                   <img
                     src={cat.image}

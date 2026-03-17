@@ -1,3 +1,5 @@
+import Sale from "../../images/Sale.png";
+
 import React, { useState } from "react";
 
 const demoCategories = [
@@ -25,7 +27,7 @@ export default function Sidebar() {
   const [priceRange, setPriceRange] = useState([minPrice, maxPrice]);
 
   return (
-    <aside className="w-full lg:w-[240px] max-w-[240px] p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
+    <aside className="w-full lg:w-[310px] max-w-[310px] p-6 bg-white border border-gray-200 rounded-2xl shadow-sm">
       {/* Categories */}
       <div className="mb-8">
         <h2 className="text-lg font-bold text-gray-800 mb-4">Categories</h2>
@@ -126,22 +128,9 @@ export default function Sidebar() {
         </ul>
       </div>
 
-      <button
-        type="button"
-        className="w-full px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-xl hover:bg-green-700 mt-2"
-        onClick={() => {
-          setSelectedCategory("House Plants");
-          setSelectedSize(null);
-          setPriceRange([minPrice, maxPrice]);
-        }}
-      >
-        Reset filters
-      </button>
-
       {/* Banner */}
-      <div className="mt-10 rounded-2xl border border-gray-200 bg-white p-6 text-center">
-        <p className="text-2xl font-bold text-green-600">Super Sale</p>
-        <p className="text-sm text-gray-500">UP TO 75% OFF</p>
+      <div className="mt-10 w-full">
+        <img src={Sale} alt="" className="" />
         {/* Banner image can be added here if needed */}
       </div>
     </aside>

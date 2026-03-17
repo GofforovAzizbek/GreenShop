@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { api } from "../../../services/api";
 import Hero from "./Hero";
 import BlogSection from "./BlogSection";
@@ -8,10 +8,9 @@ import Pagination from "./Pagination";
 
 function Main({ showHero = true }) {
   const [products, setProducts] = useState([]);
-  const [allProducts, setAllProducts] = useState([]);
-  const [count, setCount] = useState(0);
   const [page, setPage] = useState(1);
-  const [limit] = useState(12);
+  const itemsPerPage = 9;
+  const API_FETCH_LIMIT = 1000;
   const [categories, setCategories] = useState([]);
   const [categoryCounts, setCategoryCounts] = useState({});
   const [sizes, setSizes] = useState([]);
@@ -26,8 +25,6 @@ function Main({ showHero = true }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-
-  const totalPages = Math.max(1, Math.ceil(count / limit));
 
   const resetFilters = () => {
     setSelectedCategory("All");
@@ -59,7 +56,6 @@ function Main({ showHero = true }) {
         params: { page: 1, limit: 100 },
       });
       const productsAll = response.data.products || [];
-      setAllProducts(productsAll);
 
       const uniqueCategories = [...new Set(productsAll.map((p) => p.category))];
       setCategories(uniqueCategories);
@@ -83,24 +79,23 @@ function Main({ showHero = true }) {
     }
   };
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const params = { page, limit };
+      const params = { page: 1, limit: API_FETCH_LIMIT };
       if (selectedCategory !== "All") params.category = selectedCategory;
       if (selectedSize !== "All") params.size = selectedSize;
 
       const response = await api.get("/products", { params });
       setProducts(response.data.products || []);
-      setCount(response.data.count || 0);
     } catch (err) {
       setError(err.response?.data?.message || "Failed to load products");
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory, selectedSize]);
 
   useEffect(() => {
     fetchCategories();
@@ -108,7 +103,7 @@ function Main({ showHero = true }) {
 
   useEffect(() => {
     fetchProducts();
-  }, [page, selectedCategory]);
+  }, [fetchProducts]);
 
   const filteredProducts = useMemo(() => {
     const getEffectivePrice = (product) =>
@@ -150,6 +145,21 @@ function Main({ showHero = true }) {
 
     return list;
   }, [products, activeTab, search, appliedPriceRange, sortBy]);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredProducts.length / itemsPerPage),
+  );
+  const paginatedProducts = useMemo(() => {
+    const start = (page - 1) * itemsPerPage;
+    return filteredProducts.slice(start, start + itemsPerPage);
+  }, [filteredProducts, page, itemsPerPage]);
+
+  useEffect(() => {
+    if (page > totalPages) {
+      setPage(1);
+    }
+  }, [page, totalPages]);
 
   return (
     <main className="min-h-screen pt-24 pb-24 lg:pt-0 lg:pb-0">
@@ -222,7 +232,7 @@ function Main({ showHero = true }) {
             </div>
 
             <Products
-              products={filteredProducts}
+              products={paginatedProducts}
               isLoading={loading}
               error={error}
             />

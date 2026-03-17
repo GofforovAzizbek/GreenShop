@@ -1,5 +1,5 @@
-import img1 from "../../images/img1.png";
-import img2 from "../../images/img2.png";
+import img1 from "../../images/image1.png";
+import img2 from "../../images/image2.png";
 import bannerpicture from "../../images/bannerpicture.png";
 
 const banners = [
@@ -54,14 +54,14 @@ const posts = [
 
 export default function BlogSection() {
   return (
-    <section className="container mt-14">
-      <div className="grid gap-6 lg:grid-cols-2">
+    <section className="container mt-[90px]">
+      <div className="grid justify-between gap-5 lg:grid-cols-2">
         {banners.map((banner) => (
           <div
             key={banner.title}
-            className="flex flex-col items-center justify-between gap-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm md:flex-row"
+            className="flex items-center justify-between text-right gap-6 rounded-2xl md:flex-row-reverse"
           >
-            <div className="flex-1">
+            <div className="flex-2">
               <h3 className="text-sm font-semibold uppercase tracking-wider text-gray-700">
                 {banner.title}
               </h3>
@@ -74,21 +74,15 @@ export default function BlogSection() {
               </button>
             </div>
 
-            <div className="h-[210px] w-full max-w-[240px] overflow-hidden rounded-2xl bg-gray-50">
-              <img
-                src={banner.image}
-                alt={banner.title}
-                className="h-full w-full object-cover"
-              />
+            <div className="">
+              <img src={banner.image} alt={banner.title} className="" />
             </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-16 text-center">
-        <p className="text-sm font-medium uppercase tracking-widest text-gray-500">
-          Our Blog Posts
-        </p>
+      <div className="mt-[120px] text-center">
+        <p className="">Our Blog Posts</p>
         <p className="mt-2 text-base text-gray-600">
           We are an online plant shop offering a wide range of cheap and trendy
           plants.

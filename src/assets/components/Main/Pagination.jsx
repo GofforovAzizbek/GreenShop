@@ -18,7 +18,7 @@ export default function Pagination({ page, totalPages, onChange }) {
   const pages = getPageNumbers(page, totalPages);
 
   return (
-    <nav className="mt-8 flex items-center justify-center gap-2 text-sm">
+    <nav className="mt-[90px] flex items-center justify-end gap-2 text-sm">
       <button
         type="button"
         disabled={page === 1}
