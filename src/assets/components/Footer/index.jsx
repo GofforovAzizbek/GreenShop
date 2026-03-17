@@ -1,206 +1,218 @@
-import React from "react";
+import React, { useState } from "react";
+import logoIcon from "../../images/logo.svg";
+import locationIcon from "../../images/Location.svg";
+import emailIcon from "../../images/Message.svg";
+import phoneIcon from "../../images/Calling.svg";
+import gardenCareImg from "../../images/FooterCactus1.svg";
+import plantRenovationImg from "../../images/FooterCactus2.svg";
+import wateringGardenImg from "../../images/FooterCactus3.svg";
+import paymentMethodsImg from "../../images/FooterPayment.svg";
+import facebookIcon from "../../images/Facebook.svg";
+import instagramIcon from "../../images/Instagram.svg";
+import twitterIcon from "../../images/Twitter.svg";
+import linkedinIcon from "../../images/Linkedin.svg";
+import unionIcon from "../../images/Union.svg";
 
-export default function Footer() {
+const categories = [
+  {
+    image: gardenCareImg,
+    title: "Garden Care",
+    description:
+      "We are an online plant shop offering a wide range of cheap and trendy plants.",
+  },
+  {
+    image: plantRenovationImg,
+    title: "Plant Renovation",
+    description:
+      "We are an online plant shop offering a wide range of cheap and trendy plants.",
+  },
+  {
+    image: wateringGardenImg,
+    title: "Watering Garden",
+    description:
+      "We are an online plant shop offering a wide range of cheap and trendy plants.",
+  },
+];
+
+const footerLinks = [
+  {
+    title: "My Account",
+    links: ["My Account", "Our stores", "Contact us", "Career", "Specials"],
+  },
+  {
+    title: "Help & Guide",
+    links: [
+      "Help Center",
+      "How to Buy",
+      "Shipping & Delivery",
+      "Product Policy",
+      "How to Return",
+    ],
+  },
+  {
+    title: "Categories",
+    links: [
+      "House Plants",
+      "Potter Plants",
+      "Seeds",
+      "Small Plants",
+      "Accessories",
+    ],
+  },
+];
+
+const socialLinks = [
+  { icon: facebookIcon, label: "Facebook" },
+  { icon: instagramIcon, label: "Instagram" },
+  { icon: twitterIcon, label: "Twitter" },
+  { icon: linkedinIcon, label: "LinkedIn" },
+  { icon: unionIcon, label: "Other" },
+];
+
+const DesktopFooter = () => {
+  const [email, setEmail] = useState("");
+
   return (
-    <footer className="bg-white text-gray-700">
-      <div className="container py-12">
-        <div className="grid gap-8 lg:grid-cols-4">
-          {/* Newsletter / promo */}
-          <div className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Would you like to join newsletters?
-            </h2>
-            <p className="mt-2 text-sm text-gray-600">
-              We usually post offers and challenges in newsletter. We're your
-              online houseplant destination.
-            </p>
-            <form className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <input
-                type="email"
-                placeholder="Enter your email address..."
-                className="flex-1 rounded-full border border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-700 focus:border-green-400 focus:outline-none focus:ring-2 focus:ring-green-100"
-              />
-              <button
-                type="submit"
-                className="rounded-full bg-green-600 px-6 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-green-700"
-              >
-                Join
-              </button>
-            </form>
-          </div>
-
-          {/* Link sections */}
-          <div className="grid gap-8 lg:grid-cols-2 lg:col-span-3">
-            <div className="grid gap-8 sm:grid-cols-2">
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900">
-                  My Account
-                </h3>
-                <ul className="mt-4 space-y-2 text-sm text-gray-600">
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      My Account
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      Our stores
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      Contact us
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      Career
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      Specials
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900">
-                  Help & Guide
-                </h3>
-                <ul className="mt-4 space-y-2 text-sm text-gray-600">
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      Help Center
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      How to Buy
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      Shipping & Delivery
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      Product Policy
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      How to Return
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="grid gap-8 sm:grid-cols-2">
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900">
-                  Categories
-                </h3>
-                <ul className="mt-4 space-y-2 text-sm text-gray-600">
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      House Plants
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      Pottery Plants
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      Seeds
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      Small Plants
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:text-green-600">
-                      Accessories
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="text-sm font-semibold text-gray-900">Contact</h3>
-                <div className="mt-4 space-y-3 text-sm text-gray-600">
-                  <div className="flex items-start gap-3">
-                    <span className="mt-1 h-8 w-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
-                      <span className="text-xl">📍</span>
-                    </span>
-                    <div>
-                      <p className="font-semibold text-gray-900">
-                        70 West Buckingham Ave.
-                      </p>
-                      <p>Farmingdale, NY 11735</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="mt-1 h-8 w-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
-                      <span className="text-xl">✉️</span>
-                    </span>
-                    <div>
-                      <p className="font-semibold text-gray-900">
-                        contact@greenshop.com
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-3">
-                    <span className="mt-1 h-8 w-8 rounded-full bg-green-100 text-green-700 flex items-center justify-center">
-                      <span className="text-xl">📞</span>
-                    </span>
-                    <div>
-                      <p className="font-semibold text-gray-900">
-                        +88 01911 717 490
-                      </p>
-                    </div>
-                  </div>
+    <footer className="hidden md:block">
+      {/* Contact / Newsletter strip */}
+      <div className="bg-white border-t border-gray-100">
+        <div className="max-w-[1200px] mx-auto px-8 py-12">
+          <div className="grid grid-cols-4 gap-10">
+            {/* Categories */}
+            {categories.map((cat, i) => (
+              <div key={i} className="flex items-start gap-4">
+                <div className="w-14 h-14 shrink-0 flex items-center justify-center">
+                  <img
+                    src={cat.image}
+                    alt={cat.title}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm text-gray-800 mb-1">
+                    {cat.title}
+                  </h3>
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    {cat.description}
+                  </p>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
+            ))}
 
-        <div className="mt-12 border-t border-gray-200 pt-8">
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div className="flex items-center gap-3">
-              <span className="h-10 w-10 rounded-full bg-green-600" />
-              <span className="text-sm font-semibold text-gray-900">
-                GreenShop
-              </span>
-            </div>
-            <p className="text-sm text-gray-500">
-              © 2026 GreenShop. All Rights Reserved.
-            </p>
-            <div className="flex items-center gap-3 text-sm text-gray-600">
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
-                <span className="text-green-600">F</span>
-              </span>
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
-                <span className="text-green-600">I</span>
-              </span>
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
-                <span className="text-green-600">T</span>
-              </span>
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200">
-                <span className="text-green-600">L</span>
-              </span>
+            {/* Newsletter */}
+            <div className="flex flex-col gap-3">
+              <h3 className="font-bold text-sm text-gray-800">
+                Would you like to join newsletters?
+              </h3>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="enter your email address..."
+                  className="flex-1 border border-gray-200 rounded px-3 py-2 text-xs text-gray-500 outline-none focus:border-[#46A358] transition-colors"
+                />
+                <button
+                  onClick={() => setEmail("")}
+                  className="bg-[#46A358] hover:bg-[#3d9450] text-white text-xs font-semibold px-4 py-2 rounded transition-colors whitespace-nowrap"
+                >
+                  Join
+                </button>
+              </div>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                We usually post offers and challenges in newsletter. We're your
+                online houseplant destination.
+              </p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Main footer */}
+      <div className="bg-[#f0faf2]">
+        <div className="max-w-[1200px] mx-auto px-8 py-10">
+          <div className="grid grid-cols-5 gap-10">
+            {/* Brand */}
+            <div className="col-span-2 flex flex-col gap-4">
+              <img src={logoIcon} alt="GreenShop" className="h-8 w-fit" />
+              <div className="flex flex-col gap-2.5 text-sm text-gray-600">
+                <div className="flex items-start gap-2">
+                  <img
+                    src={locationIcon}
+                    alt=""
+                    className="w-4 h-4 mt-0.5 shrink-0"
+                  />
+                  <span>70 West Buckingham Ave. Farmingdale, NY 11735</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <img src={emailIcon} alt="" className="w-4 h-4 shrink-0" />
+                  <span>contact@greenshop.com</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <img src={phoneIcon} alt="" className="w-4 h-4 shrink-0" />
+                  <span>+88 01911 717 490</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Links */}
+            {footerLinks.map((section, i) => (
+              <div key={i}>
+                <h4 className="font-bold text-sm text-gray-800 mb-4">
+                  {section.title}
+                </h4>
+                <ul className="flex flex-col gap-2">
+                  {section.links.map((link, j) => (
+                    <li key={j}>
+                      <a
+                        href="#"
+                        className="text-sm text-gray-500 hover:text-[#46A358] transition-colors"
+                      >
+                        {link}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+          {/* Social + Payments */}
+          <div className="border-t border-gray-200 mt-10 pt-6 flex items-center justify-between">
+            <div className="flex flex-col gap-3">
+              <h4 className="font-bold text-sm text-gray-800">Social Media</h4>
+              <div className="flex items-center gap-2">
+                {socialLinks.map((s, i) => (
+                  <a
+                    key={i}
+                    href="#"
+                    className="w-9 h-9 rounded border border-gray-200 bg-white flex items-center justify-center hover:border-[#46A358] hover:bg-[#f0faf2] transition-colors"
+                  >
+                    <img src={s.icon} alt={s.label} className="w-4 h-4" />
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col gap-3 items-end">
+              <h4 className="font-bold text-sm text-gray-800">We accept</h4>
+              <img
+                src={paymentMethodsImg}
+                alt="Payment methods"
+                className="h-8 object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Copyright */}
+      <div className="bg-white border-t border-gray-100 py-4">
+        <p className="text-xs text-gray-400 text-center">
+          © 2021 GreenShop. All Rights Reserved.
+        </p>
+      </div>
     </footer>
   );
-}
+};
+
+export default DesktopFooter;

@@ -110,7 +110,7 @@ function Header() {
   const isBlogsActive = location.hash === "#blogs";
 
   const headerLinkClass = (isActive) =>
-    `relative z-10 flex flex-col items-center text-sm font-medium transition border-b-[3px] border-transparent ${
+    `relative z-10 flex flex-col items-center text-sm font-medium transition border-b-[3px] border-transparent pb-1 ${
       isActive
         ? "text-green-600 border-green-600"
         : "text-[#3D3D3D] hover:text-green-600 hover:border-green-600"

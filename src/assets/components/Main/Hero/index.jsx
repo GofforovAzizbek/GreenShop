@@ -1,7 +1,6 @@
 import bannerpicture from "../../../images/bannerpicture.png";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Carousel } from "flowbite-react";
+import { useEffect, useRef, useState } from "react";
 
 const slides = [
   {
@@ -27,7 +26,7 @@ const slides = [
   },
 ];
 
-// Flowbite Loading uchun
+// Simple loading skeleton while hero photo loads
 const LoadingOverlay = () => (
   <div className="flex h-[450px] items-center justify-center rounded-[24px] bg-white/80 shadow-inner">
     <div className="flex w-full max-w-5xl flex-col gap-6 px-8 py-8 md:flex-row">
@@ -50,77 +49,117 @@ const LoadingOverlay = () => (
 
 function Hero() {
   const [loading, setLoading] = useState(true);
-  const carouselRef = useRef(null);
+  const [active, setActive] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [dragStart, setDragStart] = useState(null);
+  const trackRef = useRef(null);
 
-  const snapToNearestSlide = useCallback(() => {
-    const root = carouselRef.current;
-    if (!root) return;
-    const scrollContainer = root.querySelector("[class*='overflow-x-scroll']");
-    if (!scrollContainer) return;
-
-    const { scrollLeft, clientWidth } = scrollContainer;
-    const target = Math.round(scrollLeft / clientWidth) * clientWidth;
-    scrollContainer.scrollTo({ left: target, behavior: "smooth" });
-  }, []);
+  const slideCount = slides.length;
 
   useEffect(() => {
-    const id = window.setTimeout(() => setLoading(false), 800);
+    const id = window.setTimeout(() => setLoading(false), 500);
     return () => window.clearTimeout(id);
   }, []);
 
   useEffect(() => {
-    window.addEventListener("mouseup", snapToNearestSlide);
-    window.addEventListener("touchend", snapToNearestSlide);
-    return () => {
-      window.removeEventListener("mouseup", snapToNearestSlide);
-      window.removeEventListener("touchend", snapToNearestSlide);
-    };
-  }, [snapToNearestSlide]);
+    if (isPaused) return;
+    const intervalId = window.setInterval(() => {
+      setActive((prev) => (prev + 1) % slideCount);
+    }, 4500);
+    return () => window.clearInterval(intervalId);
+  }, [isPaused, slideCount]);
+
+  const handleIndicatorClick = (index) => {
+    setActive(index);
+  };
+
+  const onDragStart = (event) => {
+    setIsPaused(true);
+    setDragStart(
+      event.type.startsWith("touch") ? event.touches[0].clientX : event.clientX,
+    );
+  };
+
+  const onDragEnd = (event) => {
+    if (dragStart === null) return;
+    const currentX = event.type.startsWith("touch")
+      ? event.changedTouches[0].clientX
+      : event.clientX;
+    const delta = currentX - dragStart;
+    if (delta > 60) {
+      setActive((prev) => (prev - 1 + slideCount) % slideCount);
+    } else if (delta < -60) {
+      setActive((prev) => (prev + 1) % slideCount);
+    }
+    setDragStart(null);
+    setIsPaused(false);
+  };
 
   return (
     <div className="container pt-[15px] pb-[45px]">
       {loading ? (
         <LoadingOverlay />
       ) : (
-        <Carousel
-          slideInterval={3000}
-          className=""
-          draggable
-          slide
-          pauseOnHover={false}
-          indicators
-          leftControl={<span className="hidden" />}
-          rightControl={<span className="hidden" />}
+        <div
+          className="relative overflow-hidden rounded-2xl bg-[#F5F5F580] shadow-sm"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
         >
-          {slides.map(({ title, subtitle, button, image }) => (
-            <div
-              key={title}
-              className="pl-[40px] relative flex flex-col justify-between items-center bg-[#F5F5F580] md:flex-row"
-            >
-              <div className="max-w-[580px] w-fullflex flex-col items-start">
-                <p className="font-cera font-medium text-[14px] leading-[16px] tracking-[0.1em] uppercase text-[#3D3D3D] mb-[8px]">
-                  Welcome to GreenShop
-                </p>
-                <h1 className="font-black text-[70px] leading-[70px] tracking-normal uppercase text-[#3D3D3D] mb-[10px]">
-                  {title} <span className="text-[#46A358]">Planet</span>
-                </h1>
-                <p className="font-normal text-[14px] leading-[24px] tracking-normal text-[#727272] mb-[40px]">
-                  {subtitle}
-                </p>
-                <button className="py-[10px] px-[26.47px] rounded-[6px] hover:opacity-80 font-bold text-[16px] leading-[20px] tracking-normal uppercase text-[#fff] bg-[#46A358]">
-                  {button}
-                </button>
-              </div>
+          <div
+            ref={trackRef}
+            className="flex h-[450px] w-full touch-pan-y"
+            onMouseDown={onDragStart}
+            onMouseUp={onDragEnd}
+            onTouchStart={onDragStart}
+            onTouchEnd={onDragEnd}
+            style={{
+              transform: `translateX(-${active * 100}%)`,
+              transition: "transform 0.7s ease-out",
+            }}
+          >
+            {slides.map(({ title, subtitle, button, image }, idx) => (
+              <div
+                key={idx}
+                className="min-w-full flex flex-col gap-10 pl-[40px] justify-between md:flex-row md:items-center md:justify-between"
+              >
+                <div className="flex flex-1 flex-col items-start justify-center max-w-[560px]">
+                  <p className="font-cera font-medium text-[14px] leading-[16px] tracking-[0.1em] uppercase text-[#3D3D3D] mb-[8px]">
+                    Welcome to GreenShop
+                  </p>
+                  <h1 className="font-black text-[70px] leading-[70px] tracking-normal uppercase text-[#3D3D3D] mb-[10px]">
+                    {title} <span className="text-[#46A358]">Planet</span>
+                  </h1>
+                  <p className="font-normal text-[14px] leading-[24px] tracking-normal text-[#727272] mb-[40px]">
+                    {subtitle}
+                  </p>
+                  <button className="py-[10px] px-[26.47px] rounded-[6px] bg-[#46A358] hover:bg-[#3f8b4f] font-bold text-[16px] leading-[20px] tracking-normal uppercase text-white">
+                    {button}
+                  </button>
+                </div>
 
-              <div className="relative">
-                <div className="absolute" />
-                <div className="relative top-[-50px] h-[450px] w-full">
-                  <img src={image} className="" />
+                <div className="flex flex-1 items-center justify-end mt-[-25px]">
+                  <img src={image} alt={`Slide ${idx + 1}`} className="" />
                 </div>
               </div>
-            </div>
-          ))}
-        </Carousel>
+            ))}
+          </div>
+
+          {/* Indicators */}
+          <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-3">
+            {slides.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => setActive(idx)}
+                className={`h-3 w-3 rounded-full transition ${
+                  idx === active
+                    ? "bg-emerald-600"
+                    : "bg-emerald-200 hover:bg-emerald-300"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );
