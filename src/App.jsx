@@ -5,14 +5,13 @@ import {
   Navigate,
   useLocation,
 } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   NavigationProvider,
   useNavigationLoading,
 } from "./contexts/NavigationContext";
 import Header from "./assets/components/Header";
 import Footer from "./assets/components/Footer";
-import MobileFooter from "./assets/components/Footer/MobileFooter";
 import Main from "./assets/components/Main";
 import ProductDetail from "./pages/ProductDetail";
 import { Spinner } from "flowbite-react";
@@ -38,29 +37,7 @@ function RouterLoader() {
   );
 }
 
-function useIsMobile() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const mql = window.matchMedia("(max-width: 767px)");
-    const handleChange = (event) => setIsMobile(event.matches);
-
-    setIsMobile(mql.matches);
-    mql.addEventListener?.("change", handleChange);
-    mql.addListener?.(handleChange);
-
-    return () => {
-      mql.removeEventListener?.("change", handleChange);
-      mql.removeListener?.(handleChange);
-    };
-  }, []);
-
-  return isMobile;
-}
-
 function AppRouter() {
-  const isMobile = useIsMobile();
-
   return (
     <BrowserRouter>
       <Header />
@@ -74,7 +51,6 @@ function AppRouter() {
               <>
                 <Main showHero />
                 <Footer />
-                {isMobile && <MobileFooter />}
               </>
             }
           />
@@ -84,7 +60,6 @@ function AppRouter() {
               <>
                 <Main showHero={false} />
                 <Footer />
-                {isMobile && <MobileFooter />}
               </>
             }
           />
@@ -94,7 +69,6 @@ function AppRouter() {
               <>
                 <ProductDetail />
                 <Footer />
-                {isMobile && <MobileFooter />}
               </>
             }
           />

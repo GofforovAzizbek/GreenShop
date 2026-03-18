@@ -3,11 +3,13 @@ import { NavLink, useLocation } from "react-router-dom";
 
 // Logo img
 import logo from "../../images/logo.svg";
+import navBar from "../../images/navBar.svg";
 
 // Header Right Icons
 import search from "../../images/search.svg";
 import bags from "../../images/bags.svg";
 import logout from "../../images/logout.svg";
+import likebtn from "../../images/likebtn.svg";
 
 function MobileTopSearch() {
   return (
@@ -26,6 +28,25 @@ function MobileTopSearch() {
   );
 }
 
+function HomeIcon({ className }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M3 10.5L12 3L21 10.5V20C21 20.5523 20.5523 21 20 21H15C14.4477 21 14 20.5523 14 20V15C14 14.4477 13.5523 14 13 14H11C10.4477 14 10 14.4477 10 15V20C10 20.5523 9.55228 21 9 21H4C3.44772 21 3 20.5523 3 20V10.5Z"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 function MobileBottomNav() {
   const location = useLocation();
 
@@ -34,65 +55,15 @@ function MobileBottomNav() {
 
   const isShopActive = path === "/shop" || path.startsWith("/products");
 
-  const items = [
-    {
-      key: "home",
-      label: "Home",
-      to: "/",
-      isActive: () => path === "/" && !location.hash,
-    },
-    { key: "shop", label: "Shop", to: "/shop", isActive: () => isShopActive },
-    {
-      key: "products",
-      label: "Products",
-      to: "/products/",
-      isActive: () => false,
-    },
-    { key: "more", label: "More", to: "#", isActive: () => false },
-  ];
-
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between px-6 pb-2 pt-2 lg:hidden">
-      <div className="relative w-full flex justify-center">
-        <div className="absolute -top-8 left-1/2 -translate-x-1/2 z-10">
-          <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center shadow-lg border-4 border-white">
-            <svg
-              width="32"
-              height="32"
-              fill="none"
-              stroke="#fff"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-            >
-              <rect x="4" y="4" width="16" height="16" rx="4" />
-              <path d="M8 12h8M12 8v8" />
-            </svg>
-          </div>
-        </div>
-        <div className="w-full bg-white rounded-t-[36px] rounded-b-[24px] shadow-lg flex items-center justify-between px-8 py-4">
-          <NavLink to="/" className="flex flex-col items-center">
-            <svg width="28" height="28" fill="#219653" viewBox="0 0 24 24">
-              <path d="M3 9.75A6.75 6.75 0 0 1 9.75 3h4.5A6.75 6.75 0 0 1 21 9.75v4.5A6.75 6.75 0 0 1 14.25 21h-4.5A6.75 6.75 0 0 1 3 14.25v-4.5Z" />
-              <path d="M9 21v-6h6v6" />
-            </svg>
-          </NavLink>
-          <NavLink to="/favorites" className="flex flex-col items-center">
-            <svg width="28" height="28" fill="#E0E0E0" viewBox="0 0 24 24">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-            </svg>
-          </NavLink>
-          <NavLink to="/cart" className="flex flex-col items-center">
-            <svg width="28" height="28" fill="#E0E0E0" viewBox="0 0 24 24">
-              <path d="M7 18c-1.1 0-2-.9-2-2V7c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v9c0 1.1-.9 2-2 2H7zm0 2h10c2.21 0 4-1.79 4-4V7c0-2.21-1.79-4-4-4H7C4.79 3 3 4.79 3 7v9c0 2.21 1.79 4 4 4z" />
-            </svg>
-          </NavLink>
-          <NavLink to="/profile" className="flex flex-col items-center">
-            <svg width="28" height="28" fill="#E0E0E0" viewBox="0 0 24 24">
-              <circle cx="12" cy="8" r="4" />
-              <path d="M12 14c-4.418 0-8 1.79-8 4v2h16v-2c0-2.21-3.582-4-8-4z" />
-            </svg>
-          </NavLink>
-        </div>
+    <nav className="fixed bottom-0 left-0 right-0 w-full bg-white/80 backdrop-blur-sm z-10 lg:hidden">
+      <div className="relative w-full">
+        <img
+          src={navBar}
+          alt="Mobile navbar background"
+          className="absolute bottom-0 left-0 right-0 w-full h-auto object-contain"
+        />
+        <div className="relative z-10 h-full" />
       </div>
     </nav>
   );

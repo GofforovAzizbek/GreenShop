@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { api } from "../services/api";
 import facebookIcon from "../assets/images/Facebook.svg";
@@ -6,6 +6,7 @@ import facebookIcon from "../assets/images/Facebook.svg";
 import twitterIcon from "../assets/images/Twitter.svg";
 import linkedinIcon from "../assets/images/Linkedin.svg";
 import emailIcon from "../assets/images/Message.svg";
+import likebtn from "../assets/images/likebtn.svg";
 
 function Stars({ value, max = 5 }) {
   const fullStars = Math.floor(value);
@@ -41,6 +42,33 @@ export default function ProductDetail() {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const relatedSliderRef = useRef(null);
+  const [activeRelatedPage, setActiveRelatedPage] = useState(0);
+
+  const RELATED_ITEMS_PER_PAGE = 8;
+
+  const scrollRelated = (dir) => {
+    if (!relatedSliderRef.current) return;
+
+    const slider = relatedSliderRef.current;
+    const item = slider.querySelector("a");
+    const itemWidth = item ? item.clientWidth + 16 : slider.clientWidth * 0.8;
+
+    const nextPage = Math.max(
+      0,
+      Math.min(
+        Math.ceil(relatedProducts.length / RELATED_ITEMS_PER_PAGE) - 1,
+        activeRelatedPage + dir,
+      ),
+    );
+
+    setActiveRelatedPage(nextPage);
+    slider.scrollTo({
+      left: nextPage * RELATED_ITEMS_PER_PAGE * itemWidth,
+      behavior: "smooth",
+    });
+  };
 
   useEffect(() => {
     if (!id) return;
@@ -85,6 +113,27 @@ export default function ProductDetail() {
         });
 
         setReviews(productReviews);
+
+        // Load related products (simple heuristic: grab a few other items)
+        api
+          .get("/products", { params: { limit: 10 } })
+          .then((res) => {
+            const allProducts = res.data.products || res.data || [];
+            const related = allProducts.filter(
+              (p) => p._id !== fetchedProduct._id,
+            );
+            // Ensure at least 5 cards remain visible by repeating products if needed
+            const minItems = 5;
+            let padded = [...related];
+            while (padded.length < minItems && padded.length > 0) {
+              padded = [...padded, ...related];
+            }
+            setRelatedProducts(padded.slice(0, Math.max(minItems, 10)));
+            setActiveRelatedPage(0);
+          })
+          .catch(() => {
+            // ignore related products failure
+          });
       })
       .catch((err) => {
         setError(
@@ -95,6 +144,33 @@ export default function ProductDetail() {
       })
       .finally(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {
+    if (!relatedSliderRef.current) return;
+
+    const slider = relatedSliderRef.current;
+
+    const handleScroll = () => {
+      const item = slider.querySelector("a");
+      if (!item) return;
+
+      const itemWidth = item.clientWidth + 16; // 16px gap
+      const maxPage = Math.max(
+        0,
+        Math.ceil(relatedProducts.length / RELATED_ITEMS_PER_PAGE) - 1,
+      );
+      const currentPage = Math.min(
+        maxPage,
+        Math.round(slider.scrollLeft / (itemWidth * RELATED_ITEMS_PER_PAGE)),
+      );
+
+      setActiveRelatedPage(currentPage);
+    };
+
+    slider.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => slider.removeEventListener("scroll", handleScroll);
+  }, [relatedProducts]);
 
   const reviewStats = useMemo(() => {
     if (!reviews.length) return { count: 0, average: 0 };
@@ -108,6 +184,11 @@ export default function ProductDetail() {
 
   const unitPrice = discountedPrice ?? product?.price ?? 0;
   const totalPrice = unitPrice * quantity;
+
+  const relatedPageCount = Math.max(
+    1,
+    Math.ceil(relatedProducts.length / RELATED_ITEMS_PER_PAGE),
+  );
 
   if (loading) {
     return (
@@ -269,37 +350,19 @@ export default function ProductDetail() {
 
               <button
                 type="button"
-                className="rounded-full bg-green-600 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-green-700"
+                className="rounded-[6px] bg-green-600 py-[10px] px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-green-700"
               >
                 Buy Now
               </button>
               <button
                 type="button"
-                className="rounded-full border border-green-600 px-5 py-2 text-sm font-semibold text-green-600 transition hover:bg-green-50"
+                className="rounded-[6px] border border-green-600 px-5 py-[10px] text-sm font-semibold text-green-600 transition hover:bg-green-50"
               >
                 Add to Cart
               </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setLiked((prev) => {
-                    const next = !prev;
-                    setLikeCount((count) => count + (next ? 1 : -1));
-                    return next;
-                  });
-                }}
-                className={`rounded-full border p-2 transition ${
-                  liked
-                    ? "border-green-600 bg-green-50 text-green-700"
-                    : "border-gray-200 text-gray-600 hover:bg-gray-100"
-                }`}
-                aria-pressed={liked}
-              >
-                ♥
+              <button className="transition">
+                <img src={likebtn} alt="" className="" />
               </button>
-              <span className="text-sm font-medium text-gray-600">
-                {likeCount}
-              </span>
             </div>
 
             <div className="mt-6 space-y-1 text-sm text-gray-600">
@@ -449,6 +512,80 @@ export default function ProductDetail() {
           )}
         </div>
       </div>
+
+      {/* Related products slider */}
+      {relatedProducts.length > 0 && (
+        <section className="mt-14">
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-lg font-semibold text-gray-900">
+              Related Products
+            </h2>
+          </div>
+
+          <div className="overflow-hidden">
+            <div
+              ref={relatedSliderRef}
+              className="flex gap-4 transition-transform duration-500"
+              style={{ transform: `translateX(-${activeRelatedPage * 100}%)` }}
+            >
+              {relatedProducts.map((rp) => (
+                <Link
+                  to={`/products/${rp._id}`}
+                  key={rp._id}
+                  className="flex-none w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6"
+                >
+                  <div className="flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+                    <div className="h-40 w-full overflow-hidden bg-white">
+                      <img
+                        src={rp.pictures?.[0]}
+                        alt={rp.name}
+                        className="h-full w-full object-contain"
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col gap-2 p-4">
+                      <h3 className="text-sm font-semibold text-gray-900 line-clamp-2">
+                        {rp.name}
+                      </h3>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-sm font-semibold text-green-600">
+                          $
+                          {(rp.discount
+                            ? Math.round(rp.price * (1 - rp.discount / 100))
+                            : rp.price
+                          ).toLocaleString()}
+                        </span>
+                        {rp.discount ? (
+                          <span className="text-xs text-gray-400 line-through">
+                            ${rp.price.toLocaleString()}
+                          </span>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {relatedPageCount > 1 ? (
+            <div className="mt-4 flex justify-center gap-2">
+              {Array.from({ length: relatedPageCount }).map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setActiveRelatedPage(idx)}
+                  className={`h-2 w-2 rounded-full transition ${
+                    idx === activeRelatedPage
+                      ? "bg-green-600"
+                      : "bg-gray-300 hover:bg-gray-400"
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          ) : null}
+        </section>
+      )}
     </main>
   );
 }
