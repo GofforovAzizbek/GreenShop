@@ -71,7 +71,7 @@ const socialLinks = [
 
 const DesktopFooter = () => {
   return (
-    <footer className="hidden md:block">
+    <footer className="hidden md:block bg-[#FBFBFB]">
       {/* Feature / newsletter strip */}
       <div className="bg-white border-t border-gray-100">
         <div className="max-w-[1200px] mx-auto px-8 py-12">

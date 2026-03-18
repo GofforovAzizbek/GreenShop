@@ -61,7 +61,7 @@ function MobileBottomNav() {
         <img
           src={navBar}
           alt="Mobile navbar background"
-          className="absolute bottom-0 left-0 right-0 w-full h-auto object-contain"
+          className="absolute bottom-0 left-0 right-0 w-full h-auto object-contain cursor-pointer"
         />
         <div className="relative z-10 h-full" />
       </div>
